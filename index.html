@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>القائمة</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&family=Aref+Ruqaa:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="preload" href="/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/pacifico-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 :root[data-theme=light]{color-scheme:light;--ink:#faf5ee;--surface:#fffdf9;--raised:#f1e8dc;--line:#e2d5c4;--bone:#231a13;--muted:#6f6254;--amber:#c05610;--ember:#e07a33}
 :root{color-scheme:dark;--ink:#15110e;--surface:#1e1814;--raised:#2a221c;--line:#3a2f26;--bone:#f4ebdf;--muted:#a99b8a;--amber:#f0a04b;--ember:#c8631f;
@@ -221,8 +224,7 @@ body:not(.ready) .card.rise{animation-play-state:paused}
 html header#hero h1#brand{font-family:Pacifico,"Aref Ruqaa","IBM Plex Sans Arabic",serif!important;font-weight:400!important}
 </style>
 <script>var r=document.documentElement;r.dataset.theme="dark";r.lang="ar";r.dir="rtl"</script>
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+<script src="/vendor/supabase.js"></script>
 <script src="config.js"></script>
 </head>
 <body>
@@ -411,7 +413,11 @@ function initEmbers(){
   if(!reduce){addEventListener("pointermove",e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;},{passive:true});
     document.addEventListener("visibilitychange",()=>document.hidden?R.setAnimationLoop(null):start());start();}
 }
-addEventListener("load",initEmbers);
+// الجمر خلفية تجميلية: ما نحمّلها إلا بعد ما تظهر القائمة، وما نحمّلها على النت البطيء أو توفير البيانات
+function loadEmbers(){const c=navigator.connection||{};
+  if(c.saveData||/^(slow-2g|2g|3g)$/.test(c.effectiveType||""))return;
+  const s=document.createElement("script");s.src="/vendor/three.min.js";s.onload=initEmbers;document.head.appendChild(s)}
+addEventListener("load",()=>setTimeout(loadEmbers,3000));
 // The menu is static, so this short delay stands in for a real fetch and shows the skeleton state
 
 // شاشة افتتاحية: الاسم يطلع حرف حرف، الجمر يتجمّع ثم ينتشر، والقائمة تطلع من تحت لفوق
@@ -437,7 +443,8 @@ function intro(){
     setTimeout(ready,wait);};
   el.addEventListener("click",openIt);setTimeout(openIt,2700);
 }
-intro();
+// ننتظر الخطوط (بحد أقصى 1.5 ثانية) حتى ما يظهر الاسم بخط مؤقت ثم يتبدل
+Promise.race([Promise.all([document.fonts.load('400 1em Pacifico'),document.fonts.load('600 1em "IBM Plex Sans Arabic"')]),new Promise(r=>setTimeout(r,1500))]).catch(()=>{}).then(intro);
 </script>
 </body>
 </html>

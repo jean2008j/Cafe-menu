@@ -12,7 +12,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="لوحة الكافيه">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&family=Aref+Ruqaa:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="preload" href="/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/pacifico-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 :root{color-scheme:dark;--ink:#15110e;--surface:#1e1814;--raised:#2a221c;--line:#3a2f26;--bone:#f4ebdf;--muted:#a99b8a;--amber:#f0a04b;--ember:#c8631f;--on:#15110e;--bad:#f0735f;--ok:#34d399}
 *,*::before,*::after{box-sizing:border-box}
@@ -192,7 +195,7 @@ body{font-size:14px}
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+<script src="/vendor/supabase.js"></script>
 <script src="config.js"></script>
 </head>
 <body>
