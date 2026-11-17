@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>لوحة التحكم</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#15110e">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="لوحة الكافيه">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&family=Aref+Ruqaa:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <style>
 :root{color-scheme:dark;--ink:#15110e;--surface:#1e1814;--raised:#2a221c;--line:#3a2f26;--bone:#f4ebdf;--muted:#a99b8a;--amber:#f0a04b;--ember:#c8631f;--on:#15110e;--bad:#f0735f;--ok:#34d399}
@@ -356,5 +364,6 @@ addEventListener("keydown",e=>{if(e.key==="Escape"&&sheet){sheet=null;render()}}
 if(sb)sb.auth.onAuthStateChange(ev=>{if(ev==="SIGNED_OUT"&&auth){auth=false;render()}});
 (async()=>{if(sb){const{data}=await sb.auth.getSession();auth=!!data.session;if(auth&&!await pull())auth=false}render()})();
 </script>
+<script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))</script>
 </body>
 </html>
