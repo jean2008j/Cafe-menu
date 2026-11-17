@@ -255,7 +255,7 @@ function render(){
  applyBrand();
  document.body.style.overflow=sheet?"hidden":"";
  if(!sb){app.innerHTML=`<div class="lg"><h1>الإعداد ناقص</h1><p>عبّي ملف config.js برابط ومفتاح Supabase ثم أعد النشر.</p></div>`;return}
- if(!auth){app.innerHTML=`<form class="lg" data-f="login"><h1>${esc(ST.name)}</h1><p>لوحة التحكم — سجّل الدخول</p><input class="fi" name="email" type="email" dir="ltr" autocomplete="username" placeholder="البريد الإلكتروني" aria-label="البريد الإلكتروني" required autofocus><input class="fi" name="pw" type="password" autocomplete="current-password" placeholder="كلمة المرور" aria-label="كلمة المرور" required><button class="btn">دخول</button><a class="ghost" href="menu.html">العودة للقائمة</a></form>`;return}
+ if(!auth){app.innerHTML=`<form class="lg" data-f="login"><h1>${esc(ST.name)}</h1><p>لوحة التحكم — أدخل كلمة المرور</p><input class="fi" name="pw" type="password" autocomplete="current-password" placeholder="كلمة المرور" aria-label="كلمة المرور" required autofocus><button class="btn">دخول</button><a class="ghost" href="menu.html">العودة للقائمة</a></form>`;return}
  const tabs=[["items","الأصناف"],["qr","رمز QR"],["security","الأمان"]];
  app.innerHTML=`<header class="top"><div class="in">${ST.logo?`<img class="logo" src="${esc(ST.logo)}" alt="">`:""}<div class="ttl"><b>${esc(ST.name)}</b><small>لوحة التحكم</small></div></div></header>
  <main class="pg">${tab==="items"?vItems():tab==="security"?vSecurity():vQR()}</main>
@@ -330,7 +330,7 @@ app.addEventListener("click",async e=>{const b=e.target.closest("[data-a]");if(!
  render()});
 
 app.addEventListener("submit",async e=>{e.preventDefault();const f=e.target,k=f.dataset.f,v=Object.fromEntries(new FormData(f));
- if(k==="login"){const{error}=await sb.auth.signInWithPassword({email:v.email.trim(),password:v.pw});if(error){toast("بيانات الدخول غير صحيحة",1);f.elements.pw.value="";return}auth=true;if(!await pull())return}
+ if(k==="login"){const{error}=await sb.auth.signInWithPassword({email:CFG.ADMIN_EMAIL,password:v.pw});if(error){toast("بيانات الدخول غير صحيحة",1);f.elements.pw.value="";return}auth=true;if(!await pull())return}
  else if(k==="item"){const r={n:v.n.trim(),d:(v.d||"").trim(),p:Math.max(0,+v.p||0),c:+v.c,t:v.t||"",ok:!!v.ok,img:v.img||""};
   r.t=r.t||null;let q;
   if(sheet.id==="new")q=sb.from("menu_items").insert({id:"x"+Date.now().toString(36),h:20+Math.floor(Math.random()*25),e:"🍽️",sort:Math.max(0,...MENU.map(x=>x.sort||0))+1,...r});else q=sb.from("menu_items").update(r).eq("id",sheet.id);
