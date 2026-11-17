@@ -263,7 +263,7 @@ function render(){
  applyBrand();
  document.body.style.overflow=sheet?"hidden":"";
  if(!sb){app.innerHTML=`<div class="lg"><h1>الإعداد ناقص</h1><p>عبّي ملف config.js برابط ومفتاح Supabase ثم أعد النشر.</p></div>`;return}
- if(!auth){app.innerHTML=`<form class="lg" data-f="login"><h1>${esc(ST.name)}</h1><p>لوحة التحكم — أدخل كلمة المرور</p><input class="fi" name="pw" type="password" autocomplete="current-password" placeholder="كلمة المرور" aria-label="كلمة المرور" required autofocus><button class="btn">دخول</button><a class="ghost" href="menu.html">العودة للقائمة</a></form>`;return}
+ if(!auth){app.innerHTML=`<form class="lg" data-f="login"><h1>${esc(ST.name)}</h1><p>لوحة التحكم — أدخل كلمة المرور</p><input class="fi" name="pw" type="password" autocomplete="current-password" placeholder="كلمة المرور" aria-label="كلمة المرور" required autofocus><button class="btn">دخول</button><button type="button" class="ghost" data-a="forgot">نسيت كلمة السر؟</button><a class="ghost" href="menu.html">العودة للقائمة</a></form>`;return}
  const tabs=[["items","الأصناف"],["qr","رمز QR"],["security","الأمان"]];
  app.innerHTML=`<header class="top"><div class="in">${ST.logo?`<img class="logo" src="${esc(ST.logo)}" alt="">`:""}<div class="ttl"><b>${esc(ST.name)}</b><small>لوحة التحكم</small></div></div></header>
  <main class="pg">${tab==="items"?vItems():tab==="security"?vSecurity():vQR()}</main>
@@ -334,6 +334,7 @@ app.addEventListener("click",async e=>{const b=e.target.closest("[data-a]");if(!
   case"rmimg":{const f=b.closest("form");f.elements.img.value="";f.querySelector("#pv").textContent="📷";b.hidden=true;return}
   case"dl":{const c=app.querySelector("#qrb canvas");if(c){const l=document.createElement("a");l.download="menu-qr.png";l.href=c.toDataURL();l.click()}return}
   case"pr":print();return;
+  case"forgot":{if(!confirm("رجوع كلمة السر للأساسية؟"))return;b.disabled=true;try{const r=await fetch(CFG.SUPABASE_URL+"/functions/v1/reset-admin-password",{method:"POST",headers:{apikey:CFG.SUPABASE_ANON_KEY,Authorization:"Bearer "+CFG.SUPABASE_ANON_KEY}});const j=await r.json().catch(()=>({}));if(r.ok&&j.ok)toast("رجعت كلمة السر للأساسية");else toast("تعذّر الاسترجاع",1)}catch(_){toast("تعذّر الاسترجاع",1)}b.disabled=false;return}
   default:return}
  render()});
 
