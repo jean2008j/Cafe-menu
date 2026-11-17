@@ -140,7 +140,7 @@ textarea.fi{resize:vertical;min-height:72px}
 .qr{align-items:center;text-align:center}
 .qr h2{font:400 28px "Pacifico","Aref Ruqaa","IBM Plex Sans Arabic",serif}
 .qb{background:#fff;padding:14px;border-radius:18px;display:inline-block}
-.qb canvas,.qb img{display:block}
+.qb canvas,.qb img{display:block;width:220px!important;height:220px!important}
 
 /* login */
 .lg{max-width:360px;margin:0 auto;padding:22vh 20px 0;display:flex;flex-direction:column;gap:12px;text-align:center}
@@ -153,7 +153,7 @@ textarea.fi{resize:vertical;min-height:72px}
 .toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translate(-50%,-180%);z-index:90;background:var(--surface);border:1px solid color-mix(in srgb,var(--amber) 45%,transparent);border-radius:99px;padding:11px 20px;font-size:15px;font-weight:500;transition:transform .3s cubic-bezier(.2,.8,.2,1);pointer-events:none;white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
 .toast.show{transform:translate(-50%,0)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-@media print{body>*{visibility:hidden}#qrp,#qrp *{visibility:visible}#qrp{position:fixed;inset:0;background:#fff;color:#000;justify-content:center;border:0}}
+@page{margin:0}@media print{html,body{background:#fff!important;height:100%;overflow:hidden}body>*{visibility:hidden}#qrp,#qrp *{visibility:visible}#qrp{position:fixed;inset:0;background:#fff;color:#000;justify-content:center;gap:5vh;border:0;border-radius:0;padding:0}#qrp h2{font-size:96px;color:#000;line-height:1.3}#qrp .qb{padding:0;border-radius:0}#qrp .qb canvas,#qrp .qb img{width:min(78vw,15cm)!important;height:auto!important}#qrp .hint{font-size:40px;color:#000;margin:0}}
 /* ===== تصغير الواجهة على الموبايل ===== */
 @media(max-width:520px){
 body{font-size:14px}
@@ -194,7 +194,7 @@ body{font-size:14px}
 .link{font-size:14px;min-height:38px}
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
 <script src="/vendor/supabase.js"></script>
 <script src="config.js"></script>
 </head>
@@ -299,12 +299,10 @@ function vSecurity(){return `<form class="card" data-f="pass"><h2>تغيير ك�
  <button class="ghost" style="width:100%" data-a="out">تسجيل الخروج</button>`}
 const sf=(l,k,v,x="")=>`<label class="fl">${l}<input class="fi" data-s="${k}" value="${esc(v)}" ${x}></label>`;
 
-const pubUrl=()=>ST.url||new URL("menu.html",location.href).href;
+const pubUrl=()=>CFG.MENU_URL||"https://cafe-menu-jet-nine.vercel.app/";
 function vQR(){return `<div class="card qr" id="qrp"><h2>${esc(ST.name)}</h2><div class="qb" id="qrb"></div><p class="hint">امسح الرمز لعرض القائمة</p></div>
- ${location.protocol==="file:"&&!ST.url?`<div class="warn"><span>القائمة مو منشورة على الإنترنت بعد، فالرمز الحالي ما رح يفتح عند الزبائن. الصق رابط القائمة بعد نشرها.</span></div>`:""}
- <div class="card"><label class="fl">رابط القائمة<input class="fi" type="url" dir="ltr" data-s="url" value="${esc(ST.url)}" placeholder="${esc(pubUrl())}"></label><p class="hint">اتركه فاضي إذا بدك الرابط الحالي للصفحة.</p>
- <div class="br"><button class="btn sm" style="flex:1" data-a="dl">تنزيل الصورة</button><button class="ghost" style="flex:1" data-a="pr">طباعة</button></div></div>`}
-function drawQR(){const b=app.querySelector("#qrb");if(!b)return;b.innerHTML="";try{new QRCode(b,{text:pubUrl(),width:220,height:220,correctLevel:QRCode.CorrectLevel.M})}catch(e){b.textContent="تعذّر إنشاء الرمز"}}
+ <div class="card"><div class="br"><button class="btn sm" style="flex:1" data-a="dl">تنزيل الصورة</button><button class="ghost" style="flex:1" data-a="pr">طباعة</button></div></div>`}
+function drawQR(){const b=app.querySelector("#qrb");if(!b)return;b.innerHTML="";try{new QRCode(b,{text:pubUrl(),width:720,height:720,correctLevel:QRCode.CorrectLevel.M})}catch(e){b.textContent="تعذّر إنشاء الرمز"}}
 
 const EMO=["☕","🥛","🍵","🧊","🍋","🍓","🍨","🍫","🍪","🥐","🥪","🍽️"];
 function vItem(){const nw=sheet.id==="new",d=nw?{n:"",d:"",p:"",c:filt||1,e:"🍽️",t:"",ok:true,img:""}:MENU.find(x=>x.id===sheet.id);
