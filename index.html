@@ -49,7 +49,8 @@ nav .wrap::-webkit-scrollbar{display:none}
 .th{position:relative;overflow:hidden}
 .card{position:relative}
 .sold{position:absolute;inset:0;z-index:3;display:grid;place-items:center;border-radius:inherit;background:color-mix(in srgb,var(--ink) 28%,transparent);-webkit-backdrop-filter:blur(3.5px) saturate(.85);backdrop-filter:blur(3.5px) saturate(.85);cursor:not-allowed}
-.sold span{font-size:clamp(24px,6.5vw,36px);font-weight:500;color:#ffffffe6;letter-spacing:.03em;text-shadow:0 2px 18px #000a}
+.soldt{position:absolute;inset:0;z-index:4;display:grid;place-items:center;text-align:center;padding:8px;font-size:clamp(15px,4.4vw,22px);font-weight:500;line-height:1.35;color:#ffffffe6;letter-spacing:.02em;text-shadow:0 2px 18px #000a;pointer-events:none}
+@media(max-width:639px){.soldt{font-size:13px;padding:6px}}
 .card:has(.sold):hover{transform:none;box-shadow:none}
 .badge{position:absolute;inset-inline-start:12px;top:12px;font-size:12px;font-weight:600;padding:4px 12px;border-radius:99px;background:var(--bone);color:var(--ink)}
 .b-best{background:var(--amber)}.b-spicy{background:#ef4444;color:#fff}.b-veg{background:#34d399}
@@ -317,9 +318,9 @@ function renderGrid(){
   const list=visible();renderChips(list.length);const en=enter;enter=false;
   document.getElementById("grid").innerHTML=list.length?list.map((d,i)=>{
     const q=cart[d.id]||0;
-    return `<article class="card${en?" rise":""}" style="--i:${i}"><div class="pic sk" style="background:${grad(d.h)}"><span class="e" aria-hidden="true">${art(d)}</span>${photo(d.id,600,esc(d.n))}${d.t&&d.ok!==false?`<span class="badge ${bcls(d.t)}">${T(d.t)}</span>`:""}</div>
+    return `<article class="card${en?" rise":""}" style="--i:${i}"><div class="pic sk" style="background:${grad(d.h)}"><span class="e" aria-hidden="true">${art(d)}</span>${photo(d.id,600,esc(d.n))}${d.t&&d.ok!==false?`<span class="badge ${bcls(d.t)}">${T(d.t)}</span>`:""}${d.ok===false?`<span class="soldt">غير متوفر حالياً</span>`:""}</div>
     <div class="body"><div class="row"><h3>${esc(dn(d))}</h3><span class="price">${money(d.p)}</span></div><p class="desc">${esc(dd(d))}</p>
-    </div>${d.ok===false?`<div class="sold" role="status"><span>نفد</span></div>`:""}</article>`}).join("")
+    </div>${d.ok===false?`<div class="sold" role="status" aria-label="غير متوفر حالياً"></div>`:""}</article>`}).join("")
     :`<div class="empty">${"ما في نتائج. جرّب كلمة ثانية أو امسح البحث."}</div>`;}
 const lines=()=>MENU.filter(d=>cart[d.id]).map(d=>({d,q:cart[d.id]}));
 function renderBar(){
